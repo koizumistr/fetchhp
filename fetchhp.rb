@@ -21,8 +21,8 @@ RESULT_OUTPUT_DIR = 'result'
 
 def fetch_token
   client = OAuth2::Client.new(CLIENT_ID, CLIENT_SECRET,
-                               site: AUTHORIZATION_SERVER_BASE_URL,
-                               auth_scheme: :request_body)
+                              site: AUTHORIZATION_SERVER_BASE_URL,
+                              auth_scheme: :request_body)
 
   authorization_url = client.auth_code.authorize_url(redirect_uri: REDIRECT_URI, scope: REQUEST_SCOPE)
   puts "\n\n下記のURLをブラウザーにコピーして、認可コードを取得してください\n"
@@ -55,14 +55,14 @@ def parse_xml(xml_str)
     model = data_elem.at_xpath('model').text
     data_dict[date]['model'] = model
 
-    case tag
-    when '6021'
-      key = '体重'
-    when '6022'
-      key = '体脂肪率'
-    else
-      key = '不明'
-    end
+    key = case tag
+          when '6021'
+            '体重'
+          when '6022'
+            '体脂肪率'
+          else
+            '不明'
+          end
 
     data_dict[date][key] = keydata
   end
